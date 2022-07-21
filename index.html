@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+    </style>
+    <script src="./js/three.js"></script>
+    <script src="./js/FirstPersonControls.js"></script>
+    <script src="./js/FBXLoader.js"></script>
+    <script src="./js/fflate.js"></script>
+</head>
+<body>
+<script>
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+
+    const scene = new THREE.Scene();
+
+    const house = new THREE.Group();
+
+    const renderer = new THREE.WebGLRenderer();
+
+
+    creategurden();
+
+    function create() {
+        renderer.setSize(width, height);
+      
+        renderer.setClearColor(0xcce0ff, 1);
+        document.body.appendChild(renderer.domElement);
+
+        camera.position.set(500, 60, 0)
+        camera.lookAt(scene.position);
+
+        const light = new THREE.AmbientLight(0xCCCCCC);
+        scene.add(light);
+
+        // const axisHelper = new THREE.AxisHelper(2000);
+        // scene.add(axisHelper);
+
+        createGrass();
+
+        // createMount();
+
+         terrain();
+       
+         createhome();
+
+        createHouse();
+
+        function createHouse() {
+           
+          
+            createBed();
+        }
+       
+        scene.add(house);
+
+        scene.fog = new THREE.Fog(0xffffff, 10, 1500);
+        // scene.fog=new THREE.Fog(0xffffff, 0.001);
+    }
+
+
+// function createMount(){
+
+//     var loader = new THREE.FBXLoader();
+//         loader.load('./obj/terrain.fbx', function ( object2 ) {
+//             // object.position.x = 40;
+//             // object.position.z = 80;
+//             // object.position.y = 70;
+//             object2.position.set(1400,1500,1700)
+//             object2.scale.set(50, 50, 50)
+//             object2.rotation.set(0,1.74,0)
+//             scene.add( object2);
+//         } );
+
+// }
+
+
+
+    function createGrass() {
+        const geometry = new THREE.PlaneGeometry( 10000, 10000);
+
+        const texture = new THREE.TextureLoader().load('img/grass.jpg');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set( 100, 100 );
+
+        const grassMaterial = new THREE.MeshBasicMaterial({map: texture});
+
+        const grass = new THREE.Mesh( geometry, grassMaterial );
+
+        grass.rotation.x = -0.5 * Math.PI;
+
+        scene.add( grass );
+    }
+
+   
+   
+
+    function createBed() {
+        var loader = new THREE.FBXLoader();
+        loader.load('./obj/good-life.fbx', function ( object ) {
+            // object.position.x = 40;
+            // object.position.z = 80;
+            // object.position.y = 70;
+            object.position.set(40,50,70)
+            object.scale.set(50, 50, 50)
+            object.rotation.set(0,1.74,0)
+            house.add( object );
+        } );
+    }
+
+function  createhome()
+{
+    
+    var loader = new THREE.FBXLoader();
+        loader.load('./obj/promenade.fbx', function ( object1 ) {
+            // object.position.x = 40;
+            // object.position.z = 80;
+            // object.position.y = 70;
+            object1.position.set(150,50,70)
+            object1.scale.set(50, 50, 50)
+            object1.rotation.set(0,1.74,0)
+            // object1.color.set('red')
+            scene.add( object1);
+        } );
+}
+
+
+
+function terrain(){
+
+    var loader = new THREE.FBXLoader();
+        loader.load('./obj/sanctuary.fbx', function ( object2 ) {
+            // object.position.x = 40;
+            // object.position.z = 80;
+            // object.position.y = 70;
+            object2.position.set(-190,40,190)
+            object2.scale.set(50, 50, 50)
+            object2.rotation.set(0,60,0)
+            // object1.color.set('red')
+            scene.add( object2);
+        } );
+
+
+}
+
+
+function creategurden(){
+
+     
+    var loader = new THREE.FBXLoader();
+        loader.load('./obj/concordia.fbx', function ( object3 ) {
+            // object.position.x = 40;
+            // object.position.z = 80;
+            // object.position.y = 70;
+            object3.position.set(-400,80,-10)
+            object3.scale.set(10, 10, 10)
+            object3.rotation.set(0,10.74,0)
+            // object1.color.set('red')
+            console.log(object3)
+            scene.add( object3);
+
+        } );
+}
+
+
+
+
+
+
+    const clock = new THREE.Clock();
+
+    const controls = new THREE.FirstPersonControls(camera);
+     controls.lookSpeed = 0.05;
+    controls.movementSpeed = 100;
+    controls.lookVertical = false;
+
+    
+// var fpControls = new FirstPersonControls( camera, renderer.domElement );
+// fpControls.movementSpeed = 4;
+// fpControls.lookSpeed = 0.01;
+// fpControls.lookVertical = true;
+// fpControls.mouseDragOn = true;
+// fpControls.minDistance = 1;
+
+    create()
+    render()
+
+    function render() {
+        const delta = clock.getDelta();
+        controls.update(delta);
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(render)
+    }
+
+</script>
+</body>
+</html>
